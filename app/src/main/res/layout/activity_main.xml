@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradientbackground"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_border"
+        android:layout_centerInParent="true"
+        android:paddingBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:elevation="20dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:contentDescription="@string/app_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            app:srcCompat="@drawable/ayuklogo"
+            android:background="@drawable/imageborder"/>
+
+        <Button
+            android:id="@+id/buttonGuest"
+            android:layout_width="350dp"
+            android:layout_height="70dp"
+            android:backgroundTint="@color/blue"
+            android:text="Continue as Guest"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            app:cornerRadius="10dp"
+            android:layout_below="@+id/imageView"
+            android:layout_marginTop="30dp"/>
+
+        <TextView
+            android:id="@+id/regText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contextClickable="true"
+            android:gravity="center_horizontal"
+            android:text="Register/Login"
+            android:textColor="@color/light_font"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:layout_below="@+id/buttonGuest"
+            android:layout_marginTop="20dp"/>
+    </RelativeLayout>
+
+</RelativeLayout>

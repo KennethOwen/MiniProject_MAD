@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/customToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/red">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/back"
+            android:clickable="true"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Insert Item Page"
+            android:textSize="30sp"
+            android:textColor="@color/white"
+            android:layout_marginLeft="50dp"
+            android:textStyle="bold"
+            />
+    </androidx.appcompat.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:padding="20dp"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/customToolbar">
+
+        <TextView
+            android:id="@+id/itemText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Item Name"
+            android:textSize="30sp"
+            android:layout_marginBottom="10dp"/>
+
+        <EditText
+            android:id="@+id/itemInput"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@+id/itemText"
+            android:hint="Colgate"
+            android:textSize="30sp"
+            android:paddingStart="20dp"
+            android:background="@drawable/custom_inputborder"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/priceText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Item Price"
+            android:textSize="30sp"
+            android:layout_below="@id/itemInput"
+            android:layout_marginBottom="10dp"/>
+
+        <EditText
+            android:id="@+id/priceInput"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@+id/priceText"
+            android:inputType="number"
+            android:hint="10"
+            android:textSize="30sp"
+            android:paddingStart="20dp"
+            android:background="@drawable/custom_inputborder"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/stockText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Item Stock"
+            android:textSize="30sp"
+            android:layout_below="@id/priceInput"
+            android:layout_marginBottom="10dp"/>
+
+        <EditText
+            android:id="@+id/stockInput"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@+id/stockText"
+            android:inputType="number"
+            android:hint="10"
+            android:textSize="30sp"
+            android:paddingStart="20dp"
+            android:background="@drawable/custom_inputborder"
+            android:layout_marginBottom="10dp"/>
+
+        <LinearLayout
+            android:id="@+id/imgLayout"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_below="@id/stockInput"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ayuklogo"/>
+
+            <Button
+                android:id="@+id/btnInsertImg"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:backgroundTint="@color/red"
+                android:text="Choose Image"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:cornerRadius="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnInsert"
+            android:layout_width="320dp"
+            android:layout_height="70dp"
+            android:backgroundTint="@color/red"
+            android:text="Insert Item"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            app:cornerRadius="10dp"
+            android:layout_below="@+id/imgLayout"
+            android:layout_marginTop="20dp"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
