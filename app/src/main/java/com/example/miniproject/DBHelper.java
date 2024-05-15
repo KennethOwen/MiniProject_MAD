@@ -20,28 +20,39 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase MyDB) {
-        MyDB.execSQL("create Table user(" +
+        MyDB.execSQL("CREATE TABLE IF NOT EXISTS user(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "username TEXT," +
                 "password TEXT)");
         Log.d("DBHelper", "Database table 'user' created successfully.");
 
-        MyDB.execSQL("create Table shoplist(" +
+        MyDB.execSQL("CREATE TABLE IF NOT EXISTS shoplist(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "itemName TEXT," +
                 "itemPrice DOUBLE," +
-                "itemStocks INT," +
+                "itemStocks INTEGER," + // Changed from INT to INTEGER
                 "itemImage BLOB)");
         Log.d("DBHelper", "Database table 'shoplist' created successfully.");
+
+        MyDB.execSQL("CREATE TABLE IF NOT EXISTS cart(" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," + // Changed from id INTEGER PRIMARY KEY to id INTEGER PRIMARY KEY AUTOINCREMENT
+                "name TEXT," +
+                "price DOUBLE," +
+                "stock INTEGER)");
+        Log.d("DBHelper", "Database table 'cart' created successfully."); // Changed log message from cart_items to cart
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase MyDB, int i, int i1) {
         MyDB.execSQL("drop Table if exists user");
-        Log.d("DBHelper", "Database table 'translations' dropped successfully.");
+        Log.d("DBHelper", "Database table 'user' dropped successfully.");
 
         MyDB.execSQL("drop Table if exists shoplist");
-        Log.d("DBHelper", "Database table 'translations' dropped successfully.");
+        Log.d("DBHelper", "Database table 'shoplist' dropped successfully.");
+
+        MyDB.execSQL("drop Table if exists cart");
+        Log.d("DBHelper", "Database table 'cart' dropped successfully.");
     }
 
     public boolean insertUser(String usernameText, String passwordText) {
@@ -81,16 +92,16 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void deleteUser(int id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete("user", "id" + " = ?", new String[]{String.valueOf(id)});
-        db.close();
+        SQLiteDatabase MyDB = this.getWritableDatabase();
+        MyDB.delete("user", "id" + " = ?", new String[]{String.valueOf(id)});
+        MyDB.close();
     }
 
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
         String selectQuery = "SELECT * FROM " + "user";
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        SQLiteDatabase MyDB = this.getWritableDatabase();
+        Cursor cursor = MyDB.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {
             do {
@@ -101,7 +112,7 @@ public class DBHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
-        db.close();
+        MyDB.close();
         return userList;
     }
 
@@ -111,11 +122,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String selectQuery = "SELECT * FROM " + "shoplist";
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        SQLiteDatabase MyDB = this.getWritableDatabase();
+        Cursor cursor = MyDB.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {
             do {
+                int itemId = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
                 String itemName = cursor.getString(cursor.getColumnIndexOrThrow("itemName"));
                 double itemPrice = cursor.getDouble(cursor.getColumnIndexOrThrow("itemPrice"));
                 int itemStock = cursor.getInt(cursor.getColumnIndexOrThrow("itemStocks"));
@@ -123,16 +135,81 @@ public class DBHelper extends SQLiteOpenHelper {
                 byte[] itemImage = cursor.getBlob(cursor.getColumnIndexOrThrow("itemImage"));
 
                 // Create new Item object and add to list
-                Item item = new Item(itemName, itemPrice, itemStock, itemImage);
+                Item item = new Item(itemId, itemName, itemPrice, itemStock, itemImage);
                 itemList.add(item);
             } while (cursor.moveToNext());
         }
 
         // Close cursor and database
         cursor.close();
-        db.close();
+        MyDB.close();
 
         return itemList;
+    }
+
+    public List<ListItem> getAllItemNames() {
+        List<ListItem> itemList = new ArrayList<>();
+
+        String selectQuery = "SELECT id, itemName FROM shoplist"; // Adjust the query to select only ID and name
+
+        SQLiteDatabase MyDB = this.getWritableDatabase();
+        Cursor cursor = MyDB.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                int itemId = cursor.getInt(cursor.getColumnIndexOrThrow("id")); // Assuming "id" is the column name for item IDs
+                String itemName = cursor.getString(cursor.getColumnIndexOrThrow("itemName"));
+
+                // Create new ListItem object with only ID and name
+                ListItem item = new ListItem(itemId, itemName);
+                itemList.add(item);
+            } while (cursor.moveToNext());
+        }
+
+        // Close cursor and database
+        cursor.close();
+        MyDB.close();
+
+        return itemList;
+    }
+
+    public void addCartItem(CartItem cartItem) {
+        SQLiteDatabase MyDB = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("name", cartItem.getItemName());
+        values.put("price", cartItem.getItemPrice());
+        values.put("stock", cartItem.getItemStock());
+        MyDB.insert("cart", null, values);
+        MyDB.close();
+    }
+
+    public List<CartItem> getAllCartItems() {
+        List<CartItem> cartItems = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + "cart";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                int itemId = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+                String itemName = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+                double itemPrice = cursor.getDouble(cursor.getColumnIndexOrThrow("price"));
+                int itemStock = cursor.getInt(cursor.getColumnIndexOrThrow("stock"));
+
+                CartItem cartItem = new CartItem(itemId, itemName, itemPrice, itemStock);
+                cartItems.add(cartItem);
+            } while (cursor.moveToNext());
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+        return cartItems;
+    }
+
+    public void deleteItem(int itemId) {
+        SQLiteDatabase MyDB = this.getWritableDatabase();
+        MyDB.delete("shoplist", "id = ?", new String[]{String.valueOf(itemId)});
+        MyDB.close();
     }
 
 }

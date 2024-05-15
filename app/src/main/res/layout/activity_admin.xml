@@ -27,16 +27,17 @@
     <RelativeLayout
         android:id="@+id/menuLayout"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/customBar"
         android:layout_marginTop="100dp"
         >
 
         <LinearLayout
+            android:id="@+id/row1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_centerInParent="true">
+            android:layout_centerHorizontal="true">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/menuUser"
@@ -83,7 +84,43 @@
                     android:textStyle="bold"
                     android:layout_gravity="bottom"/>
 
+
+
             </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/row2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/row1"
+            android:layout_centerHorizontal="true">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/menuItemList"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_margin="20dp"
+                app:cardElevation="20dp"
+                android:background="@drawable/custom_cardview">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="122dp"
+                    android:src="@drawable/item"
+                    android:padding="10dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Item List"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="bottom"/>
+
+            </androidx.cardview.widget.CardView>
+
         </LinearLayout>
 
     </RelativeLayout>

@@ -14,7 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class AdminActivity extends AppCompatActivity {
 
-    CardView userList, insertList;
+    CardView userList, insertList, itemList;
     Button btnLogOut;
 
     @Override
@@ -24,6 +24,7 @@ public class AdminActivity extends AppCompatActivity {
 
         userList = findViewById(R.id.menuUser);
         insertList = findViewById(R.id.menuInsert);
+        itemList = findViewById(R.id.menuItemList);
         btnLogOut = findViewById(R.id.btnLogout);
 
         userList.setOnClickListener(new View.OnClickListener() {
@@ -38,6 +39,14 @@ public class AdminActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AdminActivity.this, AddActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        itemList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdminActivity.this, ItemListActivity.class);
                 startActivity(intent);
             }
         });
