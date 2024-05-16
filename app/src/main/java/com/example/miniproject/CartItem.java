@@ -1,7 +1,6 @@
 package com.example.miniproject;
 
 public class CartItem {
-    private byte[] image;
     private int itemId;
     private String itemName;
     private double itemPrice;

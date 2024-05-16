@@ -6,12 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +19,7 @@ public class CartActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private CartAdapter cartAdapter;
     private List<CartItem> cartItems;
+    private DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +28,10 @@ public class CartActivity extends AppCompatActivity {
 
         cartItems = new ArrayList<>();
 
+        // Initialize DBHelper
+        dbHelper = new DBHelper(this);
+
         // Retrieve cart items from the database
-        DBHelper dbHelper = new DBHelper(this);
         cartItems.addAll(dbHelper.getAllCartItems());
 
         ImageView btnBack = findViewById(R.id.btnBack);
@@ -47,7 +46,8 @@ public class CartActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.cartRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        cartAdapter = new CartAdapter(cartItems, this);
+        // Pass dbHelper to CartAdapter
+        cartAdapter = new CartAdapter(cartItems, dbHelper);
         recyclerView.setAdapter(cartAdapter);
 
         Button checkoutButton = findViewById(R.id.checkoutButton);

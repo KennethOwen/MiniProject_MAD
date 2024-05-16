@@ -15,10 +15,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     private List<User> userList;
     private OnDeleteClickListener onDeleteClickListener;
+    private OnUpdateClickListener onUpdateClickListener;
 
-    public UserAdapter(List<User> userList, OnDeleteClickListener onDeleteClickListener) {
+    public UserAdapter(List<User> userList, OnDeleteClickListener onDeleteClickListener, OnUpdateClickListener onUpdateClickListener) {
         this.userList = userList;
         this.onDeleteClickListener = onDeleteClickListener;
+        this.onUpdateClickListener = onUpdateClickListener;
     }
 
     @NonNull
@@ -38,6 +40,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                 onDeleteClickListener.onDeleteClick(user);
             }
         });
+
+        holder.updateButton.setOnClickListener(v -> {
+            if (onUpdateClickListener != null) {
+                onUpdateClickListener.onUpdateClick(user);
+            }
+        });
     }
 
     @Override
@@ -48,15 +56,21 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView usernameTextView;
         Button deleteButton;
+        Button updateButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             usernameTextView = itemView.findViewById(R.id.usernameTextView);
             deleteButton = itemView.findViewById(R.id.deleteButton);
+            updateButton = itemView.findViewById(R.id.updateButton);
         }
     }
 
     public interface OnDeleteClickListener {
         void onDeleteClick(User user);
+    }
+
+    public interface OnUpdateClickListener {
+        void onUpdateClick(User user);
     }
 }

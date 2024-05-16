@@ -206,6 +206,32 @@ public class DBHelper extends SQLiteOpenHelper {
         return cartItems;
     }
 
+    // Method to validate user
+    public boolean validateUser(String username, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("user", new String[]{"id"},
+                "username" + "=? AND " + "password" + "=?",
+                new String[]{username, password}, null, null, null);
+
+        boolean isValid = cursor.getCount() > 0;
+        cursor.close();
+        return isValid;
+    }
+
+    // Method to update user password
+    public void updatePassword(int userId, String newPassword) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("password", newPassword);
+        db.update("user", values, "id" + "=?", new String[]{String.valueOf(userId)});
+    }
+
+    // Method to remove item from cart
+    public void removeItemFromCart(int itemId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("cart", "id" + "=?", new String[]{String.valueOf(itemId)});
+    }
+
     public void deleteItem(int itemId) {
         SQLiteDatabase MyDB = this.getWritableDatabase();
         MyDB.delete("shoplist", "id = ?", new String[]{String.valueOf(itemId)});

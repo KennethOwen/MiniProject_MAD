@@ -1,7 +1,6 @@
 package com.example.miniproject;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,26 +15,11 @@ import java.util.List;
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     private List<CartItem> cartItems;
-    private Context context;
+    private DBHelper dbHelper;
 
-    public CartAdapter(List<CartItem> cartItems, Context context) {
+    public CartAdapter(List<CartItem> cartItems, DBHelper dbHelper) {
         this.cartItems = cartItems;
-        this.context = context;
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView itemNameTextView;
-        public TextView itemPriceTextView;
-        public TextView itemStockTextView;
-        public Button removeButton;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            itemNameTextView = itemView.findViewById(R.id.itemNameTextView);
-            itemPriceTextView = itemView.findViewById(R.id.itemPriceTextView);
-            itemStockTextView = itemView.findViewById(R.id.itemStockTextView);
-            removeButton = itemView.findViewById(R.id.removeButton);
-        }
+        this.dbHelper = dbHelper; // Assign dbHelper
     }
 
     @NonNull
@@ -55,6 +39,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.removeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Remove item from the database
+                dbHelper.removeItemFromCart(cartItem.getItemId());
+
                 // Remove item from the cart
                 cartItems.remove(position);
                 notifyItemRemoved(position);
@@ -66,5 +53,20 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return cartItems.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView itemNameTextView;
+        TextView itemPriceTextView;
+        TextView itemStockTextView;
+        Button removeButton;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            itemNameTextView = itemView.findViewById(R.id.itemNameTextView);
+            itemPriceTextView = itemView.findViewById(R.id.itemPriceTextView);
+            itemStockTextView = itemView.findViewById(R.id.itemStockTextView);
+            removeButton = itemView.findViewById(R.id.removeButton);
+        }
     }
 }
