@@ -40,6 +40,17 @@ public class DBHelper extends SQLiteOpenHelper {
                 "price DOUBLE," +
                 "stock INTEGER)");
         Log.d("DBHelper", "Database table 'cart' created successfully."); // Changed log message from cart_items to cart
+
+        // Insert admin user
+        ContentValues adminValues = new ContentValues();
+        adminValues.put("username", "Admin");
+        adminValues.put("password", "admin");
+        long adminInsertResult = MyDB.insert("user", null, adminValues);
+        if (adminInsertResult != -1) {
+            Log.d("DBHelper", "Admin user inserted successfully.");
+        } else {
+            Log.e("DBHelper", "Failed to insert admin user.");
+        }
     }
 
 
@@ -53,6 +64,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         MyDB.execSQL("drop Table if exists cart");
         Log.d("DBHelper", "Database table 'cart' dropped successfully.");
+
+        onCreate(MyDB);
     }
 
     public boolean insertUser(String usernameText, String passwordText) {
